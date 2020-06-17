@@ -25,7 +25,7 @@
 		  "            fs.createReadStream(path,{encoding:\"utf-8\"})",
 		  "                .pipe(es.split())",
 		  "                .pipe(es.map(async()=>{",
-		  "                    \"${2:line logic}\"",
+		  "                    //${2:line logic}",
 		  "                }))",
 		  "                .on('error', (err)=>{",
 		  "                    console.log('Error while reading file.', err);",
@@ -40,12 +40,36 @@
 		  "",
 		  "        await fileRead();",
 		  "    } catch(e){",
-		  "        \"${3:error Handling}\"",
+		  "        //${3:error Handling}",
 		  "    }",
 		  "",
 		  "    "
 		],
 		"description": "Read file line by line using node streams"
+	  },
+
+	  "check file existence": {
+		"prefix": "node-fexists",
+		"body": [
+		  "const fs = require('fs');",
+		  "if (!fs.existsSync(${1:path})){ //async vers. is deprecated LOL!",
+		  "  throw new Error(\"file path invalid\");",
+		  "}",
+		  "  "
+		],
+		"description": "check file existence"
+	  },
+	  "file backup using node": {
+		"prefix": "node-fbackup",
+		"body": [
+		  "//backup",
+		  "const path = \"${1:path}\";",
+		  "await pify(fs.copyFile)(path,`${path}.original`);",
+		  "if (!fs.existsSync(`${path}.original`)){ ",
+		  "     throw new Error(\"could not generate copy. Aborting\");",
+		  "}"
+		],
+		"description": "file backup using node"
 	  }
 
 }
